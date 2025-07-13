@@ -1,0 +1,17 @@
+div {
+    position: fixed !important;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+img {
+    height: 70%;
+    width: auto;
+}

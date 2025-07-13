@@ -1,0 +1,77 @@
+<div class="order-container" *ngIf="!loading">
+    
+    <div class="testingSection">
+        <h3 class="section-heading">
+            <span>Products Ordered</span>
+            <mat-icon *ngIf="role === 'Customer' && status !== 'Delivered' && status !== 'Cancelled'"
+                class="delete-order-icon" (click)="deleteOrder()" matTooltip="Delete Order" >
+                delete
+            </mat-icon>
+        </h3>
+
+        <!-- Product Gallery with Pagination -->
+        <div class="order-gallery">
+            <button class="gallery-nav-btn prev" (click)="paginate(-1)" [disabled]="currentPage === 0">❮</button>
+
+            <div class="products-gallery">
+                <div class="product-card" *ngFor="let product of paginatedProducts"
+                    (click)="redirectToProduct(product.productId)">
+                    <img [src]="'data:image/png;base64,' + product.image" alt="{{ product.name }}" />
+                    <div class="product-info">
+                        <h4>{{ product.name }}</h4>
+                        <p><strong>Brand:</strong> {{ product.brand }}</p>
+                        <p><strong>Category:</strong> {{ product.category }}</p>
+                        <p><strong>Quantity:</strong> {{ product.quantity }}</p>
+                        <p><strong>Price:</strong> ₹{{ product.unitPrice }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="gallery-nav-btn next" (click)="paginate(1)" [disabled]="currentPage === getMaxPage() || currentPage === 0">❯</button>
+        </div>
+    </div>
+
+    <!-- Order Summary and Address Info -->
+    <div class="summary-section">
+        <div class="summary-card">
+            <h3>Order Summary</h3>
+            <p><strong>Email:</strong> {{ dataAPI.email }}</p>
+            <p><strong>Total Price:</strong> ₹{{ dataAPI.totalPrice }}</p>
+            <p><strong>Order Date:</strong> {{ dataAPI.orderDate | date }}</p>
+            <p><strong>Delivery Date:</strong> {{ dataAPI.deliveryDate | date }}</p>
+            <p><strong>Status:</strong> {{ dataAPI.status }}</p>
+        </div>
+
+        <div class="delivery-card">
+            <h3>Delivery Address</h3>
+            <p><strong>Address:</strong> {{ dataAPI.deliveryInfo?.address }}</p>
+            <p><strong>City:</strong> {{ dataAPI.deliveryInfo?.city }}</p>
+            <p><strong>State:</strong> {{ dataAPI.deliveryInfo?.state }}</p>
+            <p><strong>Country:</strong> {{ dataAPI.deliveryInfo?.country }}</p>
+            <p><strong>Postal Code:</strong> {{ dataAPI.deliveryInfo?.postalCode }}</p>
+            <p><strong>Phone:</strong> {{ dataAPI.deliveryInfo?.phone }}</p>
+        </div>
+    </div>
+
+    <!-- Edit Order -->
+    <div *ngIf="editAccess" class="edit-order">
+        <h3>Edit Order</h3>
+        <label for="status">Order Status</label>
+        <select id="status" [(ngModel)]="status">
+            <option value="Placed">Placed</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Cancelled">Cancelled</option>
+        </select>
+
+        <label for="deliveryDate">Delivery Date</label>
+        <input id="deliveryDate" type="date" [(ngModel)]="deliveryDate" />
+
+        <div class="edit-buttons">
+            <button class="save-btn" (click)="editOrder()">Save</button>
+            <button class="delete-btn" (click)="deleteOrder()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="loading" class="spinner"></div>

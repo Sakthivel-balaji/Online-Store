@@ -1,0 +1,82 @@
+<div class="orders-table-container">
+    <div *ngIf="role=='Admin'" class="filters-container">
+        <div class="dropdown-item">
+            <p-dropdown id="OrderId"
+                        class="ngdropdown"
+                        [(ngModel)]="OrderId"
+                        [options]="OrderIdsdropdown"
+                        (onChange)="getPaginatedOrders($event)"
+                        (onClear)="clearOrderId()"
+                        [showClear]="true"
+                        [filter]="true"
+                        placeholder="Order Id"></p-dropdown>
+        </div>
+
+        <div class="dropdown-item">
+            <p-dropdown id="CustomerId"
+                        class="ngdropdown"
+                        [(ngModel)]="CustomerId"
+                        [options]="CustomerIdsdropdown"
+                        (onChange)="getPaginatedOrders($event)"
+                        (onClear)="clearCustomerId()"
+                        [showClear]="true"
+                        [filter]="true"
+                        placeholder="Customer Id"></p-dropdown>
+        </div>
+
+        <div class="dropdown-item">
+            <p-dropdown id="Email"
+                        class="ngdropdown"
+                        [(ngModel)]="Email"
+                        [options]="Emailsdropdown"
+                        (onChange)="getPaginatedOrders($event)"
+                        (onClear)="clearEmail()"
+                        [showClear]="true"
+                        [filter]="true"
+                        placeholder="Email"></p-dropdown>
+        </div>
+    </div>
+
+    <p-table
+            [value]="data"
+            [lazy]="true"
+            [paginator]="true"
+            [rows]="10"
+            [totalRecords]="totalRecords"
+            styleClass="p-datatable-sm p-datatable-striped"
+            [loading]="tableLoading && !loading"
+            (onLazyLoad)="getPaginatedOrders($event)"
+            resizableColumns="true"
+    >
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="OrderId">Order Id <p-sortIcon field="orderId"></p-sortIcon></th>
+            <th pSortableColumn="CustomerId">Customer ID <p-sortIcon field="customerId"></p-sortIcon></th>
+            <th>Email</th>
+            <th pSortableColumn="OrderDate">Order Date <p-sortIcon field="orderDate"></p-sortIcon></th>
+            <th pSortableColumn="DeliveryDate">Delivery Date <p-sortIcon field="deliveryDate"></p-sortIcon></th>
+            <th pSortableColumn="Status">Status <p-sortIcon field="status"></p-sortIcon></th>
+            <th pSortableColumn="TotalPrice">Total Price <p-sortIcon field="totalPrice"></p-sortIcon></th>
+            <th>Preview</th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-order>
+        <tr>
+            <td>{{ order.orderId }}</td>
+            <td>{{ order.customerId }}</td>
+            <td>{{ order.email }}</td>
+            <td>{{ order.orderDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{ order.deliveryDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{ order.status }}</td>
+            <td>&#8377; {{ order.totalPrice }}</td>
+            <td>
+                <button class="preview-btn" (click)="previewOrder(order.orderId)">
+                    <i class="pi pi-eye"></i>
+                </button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+</div>
+<div *ngIf="loading" class="spinner"></div>

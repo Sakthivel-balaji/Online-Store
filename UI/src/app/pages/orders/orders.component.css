@@ -1,0 +1,75 @@
+.orders-table-container {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.filters-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.dropdown-item {
+    flex: 0 0 250px;
+    min-width: 200px;
+}
+
+.ngdropdown {
+    width: 100%;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+.p-datatable-sm {
+    font-size: 0.9rem;
+}
+
+.p-datatable-striped tbody tr:nth-child(odd) {
+    background-color: #f8f9fa;
+}
+
+.p-datatable-striped tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.p-datatable-striped tbody tr:hover {
+    background-color: #e9f5eb;
+}
+
+.preview-btn {
+    background-color: transparent;
+    border: none;
+    color: #00cc66;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.preview-btn:hover {
+    color: #007f4f;
+}
+
+.ngfields {
+    display: block;
+    width: 100%;
+}
+
+:host ::ng-deep .p-dropdown {
+    width: 100%
+}
+
+.spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    color: #00cc66;
+}

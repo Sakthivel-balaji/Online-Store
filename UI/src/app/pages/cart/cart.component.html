@@ -1,0 +1,54 @@
+<div class="cart-container">
+    
+    <div class="cart-gallery">
+        <button class="gallery-nav-btn prev" (click)="paginate(-1)" [disabled]="currentPage === 0">❮</button>
+        <div class="cart-items">
+            <div class="product-card" *ngFor="let product of paginatedProducts">
+                <div class="image-container">
+                    <img [src]="'data:image/jpeg;base64,' + product.productImage" alt="{{ product.productName }}"
+                        (click)="previewProduct(product.productId)" />
+                    <span class="discount-badge" *ngIf="product.discount">-{{ product.discount }}%</span>
+                </div>
+                <div class="product-info">
+                    <h4>{{ product.productName }}</h4>
+                    <p class="category-brand">{{ product.category }} | {{ product.brand }}</p>
+
+                    <p class="stock-warning">⚠️ Only {{ product.stockQuantity }} left!</p>
+
+                    <!-- Pricing -->
+                    <div class="pricing">
+                        <span class="strikethrough">₹{{ product.priceBeforeDiscount }}</span>
+                        <span class="discounted-price">₹{{ product.priceAfterDiscount }}</span>
+                    </div>
+
+                    <label>Quantity:</label>
+                    <div class="quantity-editor">
+                        <button (click)="editCartItem(product.cartItemId, product.quantity - 1)">-</button>
+                        <input type="number" [(ngModel)]="product.quantity"
+                            (change)="editCartItem(product.cartItemId, product.quantity)" />
+                        <button (click)="editCartItem(product.cartItemId, product.quantity + 1)">+</button>
+                    </div>
+
+                    <button class="delete-btn" (click)="deleteCartItem(product.cartItemId)">Delete</button>
+                </div>
+            </div>
+        </div>
+        <button class="gallery-nav-btn next" (click)="paginate(1)" [disabled]="currentPage === getMaxPage() || currentPage === 0">❯</button>
+    </div>
+
+    <div class="order-summary">
+        <h3>Order Summary 🛍️</h3>
+        <div class="summary-details">
+            <p>Subtotal: <span class="summary-value">₹{{ dataAPI.itemSubTotal }}</span></p>
+            <p>Discount: <span class="summary-value discount">- ₹{{ dataAPI.totalDiscountPrice }}</span></p>
+            <hr class="custom-divider" />
+            <p><strong>Total: <span class="summary-value final-price">₹{{ dataAPI.subTotal }}</span></strong></p>
+        </div>
+    </div>
+
+    <div class="checkout-container">
+        <button class="checkout-btn" (click)="checkOut()" [disabled]="cartCount === 0">Proceed to Checkout</button>
+    </div>
+</div>
+
+<div *ngIf="loading" class="spinner"></div>

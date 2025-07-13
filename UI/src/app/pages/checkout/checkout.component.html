@@ -1,0 +1,7 @@
+<div class="checkout-scroll-container">
+    <h2>Checkout</h2>
+    <app-address [customerId]="customerId" [isAccessedFromCustomers]="false"
+        (selectedAddressForOrder)="storeAddressId($event)">
+    </app-address>
+    <button class="checkout-btn" (click)="placeOrder()" [disabled]="addressId == 0">Place Order</button>
+</div>

@@ -1,0 +1,57 @@
+<div class="product-card">
+  <div class="product-image">
+    <img *ngIf="data.image" [src]="'data:image/jpeg;base64,' + data.image" [alt]="data.name" />
+    <div class="tags">
+      <span *ngIf="data.isFeatured" class="tag featured">Featured</span>
+      <span *ngIf="data.isPopular" class="tag popular">Popular</span>
+    </div>
+  </div>
+
+  <div class="product-details">
+    <div class="actions" *ngIf="editAccess">
+      <button mat-icon-button (click)="openEditDialog()" class="edit-btn" title="Edit Product">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteProduct()" class="delete-btn" title="Delete Product">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+
+    <h2>{{ data.name }}</h2>
+    <p class="description">{{ data.description }}</p>
+
+    <div class="rating">
+      <ng-container *ngIf="data.averageRating">
+        <ng-container *ngFor="let star of [1,2,3,4,5]">
+          <i class="star" [class.filled]="star <= data.averageRating">★</i>
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <div class="price">
+      <span class="original-price" *ngIf="data.discount">
+        ₹{{ data.price }}
+      </span>
+      <span class="discounted-price">
+        ₹{{ getDiscountedPrice(data.price, data.discount) }}
+      </span>
+    </div>
+
+    <div class="info-grid">
+      <div><strong>Category:</strong> {{ data.category }}</div>
+      <div><strong>Brand:</strong> {{ data.brand }}</div>
+      <div><strong>Stock:</strong> {{ data.stockQuantity }}</div>
+      <div><strong>Weight:</strong> {{ data.weight }} kg</div>
+      <div><strong>Dimensions:</strong> {{ data.length }} x {{ data.breadth }} x {{ data.height }} cm</div>
+      <div><strong>Created At:</strong> {{ data.createdAt | date:'medium' }}</div>
+    </div>
+
+    <div class="cart-section">
+      <label for="quantity"><strong>Quantity:</strong></label>
+      <input id="quantity" type="number" [(ngModel)]="quantity" min="1" max="{{ data.stockQuantity }}" />
+      <button [disabled]="token==null" (click)="InsertItemInCart()" class="add-to-cart-btn">Add to Cart</button>
+    </div>
+  </div>
+</div>
+<app-reviews [productId]="productId"></app-reviews>
+<div *ngIf="loading" class="spinner"></div>

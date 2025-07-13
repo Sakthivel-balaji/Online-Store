@@ -1,0 +1,113 @@
+<h2 mat-dialog-title class="dialog-title">
+    {{ data.productId ? 'Edit Product' : 'Add New Product' }}
+  </h2>
+  
+  <div mat-dialog-content class="dialog-content">
+    <form [formGroup]="productForm" class="form-container">
+      <!-- Image Upload Section -->
+      <div class="image-section">
+        <div class="image-preview">
+          <img
+            *ngIf="productForm.get('image')?.value"
+            [src]="'data:image/jpeg;base64,' + productForm.get('image')?.value"
+            alt="Product Image"
+            class="product-image"
+          />
+          <span *ngIf="!productForm.get('image')?.value" class="placeholder">No Image</span>
+        </div>
+        <button type="button" mat-flat-button color="primary" class="upload-btn">
+          <label for="file-input">Upload Image</label>
+        </button>
+        <input
+          id="file-input"
+          type="file"
+          accept="image/*"
+          (change)="onImageSelected($event)"
+          class="file-input"
+        />
+      </div>
+  
+      <!-- Form Fields -->
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" />
+          <mat-error *ngIf="productForm.get('name')?.invalid">Name is required.</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Category</mat-label>
+          <input matInput formControlName="category" />
+          <mat-error *ngIf="productForm.get('category')?.invalid">Category is required.</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Brand</mat-label>
+          <input matInput formControlName="brand" />
+          <mat-error *ngIf="productForm.get('brand')?.invalid">Brand is required.</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Price</mat-label>
+          <input matInput type="number" formControlName="price" />
+          <mat-error *ngIf="productForm.get('price')?.hasError('required')">Price is required.</mat-error>
+          <mat-error *ngIf="productForm.get('price')?.hasError('min')">Price cannot be negative.</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Discount (%)</mat-label>
+          <input matInput type="number" formControlName="discount" />
+          <mat-error *ngIf="productForm.get('discount')?.hasError('max')">Discount cannot exceed 100%.</mat-error>
+          <mat-error *ngIf="productForm.get('discount')?.hasError('min')">Discount must be at least 0%.</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Stock Quantity</mat-label>
+          <input matInput type="number" formControlName="stockQuantity" />
+          <mat-error *ngIf="productForm.get('stockQuantity')?.invalid">Stock quantity is required.</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Weight (kg)</mat-label>
+          <input matInput type="number" formControlName="weight" />
+          <mat-error *ngIf="productForm.get('weight')?.hasError('min')">Weight must be non-negative.</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Length (cm)</mat-label>
+          <input matInput type="number" formControlName="length" />
+          <mat-error *ngIf="productForm.get('length')?.hasError('min')">Length must be non-negative.</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Breadth (cm)</mat-label>
+          <input matInput type="number" formControlName="breadth" />
+          <mat-error *ngIf="productForm.get('breadth')?.hasError('min')">Breadth must be non-negative.</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Height (cm)</mat-label>
+          <input matInput type="number" formControlName="height" />
+          <mat-error *ngIf="productForm.get('height')?.hasError('min')">Height must be non-negative.</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+          <mat-error *ngIf="productForm.get('description')?.invalid">Description is required.</mat-error>
+        </mat-form-field>
+  
+        <div class="checkbox-group full-width">
+          <mat-checkbox formControlName="isFeatured">Featured</mat-checkbox>
+          <mat-checkbox formControlName="isPopular">Popular</mat-checkbox>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Actions Section -->
+  <div mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-stroked-button color="warn" class="cancel-btn" (click)="onCancel()">Cancel</button>
+    <button mat-flat-button color="primary" class="save-btn" [disabled]="!productForm.valid" (click)="onSave()">Save</button>
+  </div>
+  

@@ -1,0 +1,44 @@
+# Ignore build artifacts
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+.vs/
+
+# Ignore user-specific files
+.vscode/
+*.user
+*.suo
+
+# Ignore environment files
+.env
+*.log
+
+# NuGet Packages
+*.nupkg
+packages/
+
+# Test and coverage reports
+TestResults/
+*.trx
+*.coverage
+coverage.*
+
+# Azure DevOps pipeline artifacts
+artifacts/
+*.zip
+
+# Temporary and backup files
+*~
+*.bak
+*.tmp
+
+# Local IIS deployment files
+wwwroot/
+
+# Dependency lock files
+packages.lock.json
+
+*.sln
+appsettings.Development.json

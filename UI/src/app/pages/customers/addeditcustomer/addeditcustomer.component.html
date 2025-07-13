@@ -1,0 +1,61 @@
+<div class="card">
+    <div class="profile-section">
+        <div class="image-wrapper">
+            <img *ngIf="customerForm.get('profilePicture')?.value"
+                [src]="'data:image/jpeg;base64,' + customerForm.get('profilePicture')?.value" alt="Profile Picture"
+                class="profile-image" />
+            <span *ngIf="!customerForm.get('profilePicture')?.value" class="placeholder">No Image</span>
+        </div>
+        <div class="upload-btn-wrapper" *ngIf="isEditing">
+            <label for="file-input" class="upload-btn">Change Image</label>
+            <input id="file-input" type="file" accept="image/*" (change)="onImageSelected($event)" />
+        </div>
+    </div>
+
+    <form [formGroup]="customerForm" class="details-form">
+        <div class="field">
+            <label>Customer ID</label>
+            <input matInput [value]="customerForm.get('customerId')?.value" readonly disabled />
+        </div>
+
+        <div class="field">
+            <label>Email</label>
+            <input matInput [value]="customerForm.get('email')?.value" readonly disabled />
+        </div>
+
+        <div class="field">
+            <label>Full Name</label>
+            <input matInput formControlName="fullName" [readonly]="!isEditing" />
+        </div>
+
+        <div class="field">
+            <label>Phone</label>
+            <input matInput formControlName="phone" [readonly]="!isEditing" />
+        </div>
+
+        <div class="actions">
+            <ng-container *ngIf="!isEditing">
+                <button mat-icon-button color="primary" (click)="toggleEdit()" matTooltip="Edit"
+                    [disabled]="!editAccess">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="deleteCustomer()" matTooltip="Delete"
+                    [disabled]="role !== 'Admin'">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </ng-container>
+
+            <ng-container *ngIf="isEditing">
+                <button mat-icon-button color="primary" (click)="saveChanges()" matTooltip="Save"
+                    [disabled]="!editAccess">
+                    <mat-icon>save</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="cancelEdit()" matTooltip="Cancel">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </ng-container>
+        </div>
+    </form>
+</div>
+<div *ngIf="loading" class="spinner"></div>
+<app-address [customerId]="customerId" [isAccessedFromCustomers]="true"></app-address> 

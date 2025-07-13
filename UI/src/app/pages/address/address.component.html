@@ -1,0 +1,38 @@
+<div class="address-container">
+    
+    <div *ngIf="isAddressAccessedByCorrectUser" class="add-button">
+        <button pButton class="add-address-button" (click)="openEditDialog({ customerId: customerId })">
+            Add New Address
+        </button>
+    </div>
+
+    <div class="address-cards">
+        <div class="address-card" *ngFor="let address of dataAPI">
+
+            <div *ngIf="!isAccessedFromCustomers" class="radio-selection">
+                <input type="radio" name="selectedAddress" [value]="address.addressId"
+                    [(ngModel)]="selectedAddressId" (change)="emitAddressId()" />
+            </div>
+            
+            <div class="primary-indicator" [class.filled]="address.isPrimary"></div>
+
+            <div class="address-content">
+                <h3>{{ address.address }}</h3>
+                <p>{{ address.city }}, {{ address.state }}, {{ address.country }}</p>
+                <p>Postal Code: {{ address.postalCode }}</p>
+                <p>Phone: {{ address.phone }}</p>
+            </div>
+
+            <div class="address-actions" *ngIf="isAddressAccessedByCorrectUser">
+                <button mat-icon-button class="edit-icon" (click)="openEditDialog(address)" matTooltip="Edit">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button class="delete-icon" (click)="confirmDelete(address.addressId)" matTooltip="Delete">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="loading" class="spinner"></div>

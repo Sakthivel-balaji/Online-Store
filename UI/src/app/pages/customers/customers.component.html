@@ -1,0 +1,76 @@
+<div class="customer-table-container">
+    <div class="filters-container">
+        <div class="dropdown-item">
+            <p-dropdown id="CustomerId"
+                        class="ngdropdown"
+                        [(ngModel)]="CustomerId"
+                        [options]="customerIdsdropdown"
+                        (onChange)="getPaginatedCustomers($event)"
+                        (onClear)="clearCustomerId()"
+                        [showClear]="true"
+                        [filter]="true"
+                        placeholder="Customer ID"></p-dropdown>
+        </div>
+
+        <div class="dropdown-item">
+            <p-dropdown id="FullName"
+                        class="ngdropdown"
+                        [(ngModel)]="FullName"
+                        [options]="customerNamesdropdown"
+                        (onChange)="getPaginatedCustomers($event)"
+                        (onClear)="clearFullName()"
+                        [showClear]="true"
+                        [filter]="true"
+                        placeholder="Full Name"></p-dropdown>
+        </div>
+
+        <div class="dropdown-item">
+            <p-dropdown id="Email"
+                        class="ngdropdown"
+                        [(ngModel)]="Email"
+                        [options]="customerEmailsdropdown"
+                        (onChange)="getPaginatedCustomers($event)"
+                        (onClear)="clearEmail()"
+                        [showClear]="true"
+                        [filter]="true"
+                        placeholder="Email"></p-dropdown>
+        </div>
+    </div>
+
+    <p-table
+            [value]="data"
+            [lazy]="true"
+            [paginator]="true"
+            [rows]="10"
+            [totalRecords]="totalRecords"
+            styleClass="p-datatable-sm p-datatable-striped"
+            [loading]="tableLoading && !loading"
+            (onLazyLoad)="getPaginatedCustomers($event)"
+            resizableColumns="true"
+    >
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="CustomerId">Customer ID <p-sortIcon field="customerId"></p-sortIcon></th>
+            <th pSortableColumn="FullName">Full Name <p-sortIcon field="fullName"></p-sortIcon></th>
+            <th pSortableColumn="Email">Email <p-sortIcon field="email"></p-sortIcon></th>
+            <th pSortableColumn="Phone">Phone <p-sortIcon field="phone"></p-sortIcon></th>
+            <th>Preview</th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-customer>
+        <tr>
+            <td>{{ customer.customerId }}</td>
+            <td>{{ customer.fullName }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.phone }}</td>
+            <td>
+                <button class="preview-btn" (click)="previewCustomer(customer.customerId)">
+                    <i class="pi pi-eye"></i>
+                </button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+</div>
+<div *ngIf="loading" class="spinner"></div>

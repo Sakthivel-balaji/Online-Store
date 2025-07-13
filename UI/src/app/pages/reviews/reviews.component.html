@@ -1,0 +1,71 @@
+<div class="reviews-section">
+  <h3 class="section-title">Customer Reviews</h3>
+
+  <!-- Filter -->
+  <div class="filter-section">
+    <label for="ratingFilter">Filter by Rating:</label>
+    <select id="ratingFilter" [(ngModel)]="selectedRatingforFilter" (change)="onRatingFilterChange()"
+      class="filter-dropdown">
+      <option value="">All Ratings</option>
+      <option *ngFor="let star of [5,4,3,2,1]" [value]="star">
+        {{ star }} ★
+      </option>
+    </select>
+  </div>
+
+  <!-- Reviews List -->
+  <div *ngIf="data.reviews && data.reviews.length > 0; else noReviews">
+    <div *ngFor="let review of data.reviews" class="review-card">
+      <div class="review-header">
+        <div class="review-info">
+          <strong>{{ review.userName }}</strong>
+          <small class="review-date">{{ review.createdAt | date:'medium' }}</small>
+        </div>
+        <div class="review-rating">
+          <ng-container *ngFor="let star of [1,2,3,4,5]">
+            <i class="star" [class.filled]="star <= (review.rating || 0)">★</i>
+          </ng-container>
+        </div>
+        <button *ngIf="review.customerId === customerId" (click)="deleteReview(review.reviewId)" class="delete-btn" title="Delete Review">
+          <i class="fa fa-trash"></i>
+        </button>
+        
+      </div>
+
+      <p class="review-comment">{{ review.comment }}</p>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-controls">
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+
+  <!-- No Reviews -->
+  <ng-template #noReviews>
+    <p class="no-reviews">No reviews available for this product.</p>
+  </ng-template>
+
+  <!-- Review Form -->
+  <div class="review-form">
+    <h4>Write a Review</h4>
+    <div class="form-group">
+      <label for="rating">Rating:</label>
+      <select id="rating" [(ngModel)]="rating" class="rating-dropdown">
+        <option value="0">Select Rating</option>
+        <option *ngFor="let star of [5,4,3,2,1]" [value]="star">{{ star }} ★</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="comment">Comment:</label>
+      <textarea id="comment" [(ngModel)]="comment" rows="3" class="comment-box"></textarea>
+    </div>
+    <button (click)="insertReview()" class="submit-btn" [disabled]="rating === 0 || comment.trim() === '' || token==null">
+      Submit Review
+    </button>    
+  </div>
+</div>
+
+<div *ngIf="loading" class="spinner"></div>

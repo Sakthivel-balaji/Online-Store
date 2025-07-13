@@ -1,0 +1,39 @@
+# Node.js with Angular
+# Build a Node.js project that uses Angular.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+# Node.js with Angular - Build and Package for IIS Deployment
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    cd OnlineStoreUI  
+    ls -la 
+    npm install -g @angular/cli
+    npm install --legacy-peer-deps
+    ng build --configuration production --base-href '/'
+  displayName: 'Install Dependencies and Build Angular App'
+  
+- script: |
+    cd OnlineStoreUI
+    zip -r angular-app.zip dist
+  displayName: 'Compress Angular Build Artifacts as Zip'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'OnlineStoreUI/angular-app.zip'
+    ArtifactName: 'angular-app'
+    publishLocation: 'Container'
+  displayName: 'Publish Compressed Build Artifacts'
+

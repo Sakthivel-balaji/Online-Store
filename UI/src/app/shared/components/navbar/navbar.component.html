@@ -1,0 +1,28 @@
+<nav class="navbar-container">
+    <div class="logo">
+        <a [routerLink]="['/products']">
+            <img src="/assets/OnlineStoreLogo.png" alt="Logo" />
+        </a>
+    </div>
+
+    <div class="nav-links">
+        <a routerLink="/products" routerLinkActive="active" class="nav-link">Products</a>
+        <a routerLink="/orders" routerLinkActive="active" class="nav-link">Orders</a>
+        <a *ngIf="role=='Admin'" routerLink="/customers" routerLinkActive="active" class="nav-link">Customers</a>
+    </div>
+
+    <div class="nav-actions">
+        <button mat-icon-button routerLink="/cart" class="cart-btn" matTooltip="View Cart" [disabled]="cartCount<=0">
+            <mat-icon>shopping_cart</mat-icon>
+            <span class="cart-count" *ngIf="cartCount > 0">{{ cartCount }}</span>
+        </button>        
+
+        <button *ngIf="!isLoggedIn" pButton label="Login/Register" class="login-btn" routerLink="/login"></button>
+
+        <button *ngIf="isLoggedIn" pButton label="Logout" class="login-btn" (click)="logout()"></button>
+
+        <button *ngIf="isLoggedIn" mat-icon-button [routerLink]="['/customers', customerId]" class="profile-btn" matTooltip="Profile">
+            <mat-icon>person</mat-icon>
+        </button>        
+    </div>
+</nav>

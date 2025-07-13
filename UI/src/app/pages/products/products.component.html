@@ -1,0 +1,107 @@
+<!-- Add Product Button -->
+<div *ngIf="role=='Admin'" class="add-product-button">
+    <button (click)="addNewProduct()" [disabled]="!token">Add Product</button>
+</div>
+
+<div class="products-page">
+    <!-- Filters Section -->
+    <div class="filters-container">
+        <div class="filter-section">
+            <h4>Categories</h4>
+            <div class="scrollable-container">
+                <div *ngFor="let category of categories; let i = index" class="filter-option">
+                    <input style="cursor: pointer;" type="checkbox" [id]="'category-' + i" [value]="category" (change)="onCategoryFilterChange($event)" />
+                    <label style="cursor: pointer;" [for]="'category-' + i">{{ category }}</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="filter-section">
+            <h4>Brands</h4>
+            <div class="scrollable-container">
+                <div *ngFor="let brand of brands; let i = index" class="filter-option">
+                    <input style="cursor: pointer;" type="checkbox" [id]="'brand-' + i" [value]="brand" (change)="onBrandFilterChange($event)" />
+                    <label style="cursor: pointer;" [for]="'brand-' + i">{{ brand }}</label>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="filter-section">
+            <h4>Price Range</h4>
+            <div class="custom-slider">
+                <ngx-slider [(value)]="minPriceRangeFilter" [(highValue)]="maxPriceRangeFilter"
+                    [options]="priceSliderOptions" (userChangeEnd)="onPriceRangeChange()">
+                </ngx-slider>
+            </div>
+            <div class="price-values">₹{{ minPriceRangeFilter }} - ₹{{ maxPriceRangeFilter }}</div>
+        </div>
+
+        <div class="filter-buttons">
+            <button class="reset-button" (click)="resetFilters()">Reset Filters</button>
+        </div>
+    </div>
+
+    <!-- Products Gallery and Pagination -->
+    <div class="content-container">
+        <div class="products-gallery">
+            <div class="product-card" *ngFor="let product of data" (mouseenter)="hoveredProduct = product.productId"
+                (mouseleave)="hoveredProduct = null">
+                <div class="image-container">
+                    <img [src]="'data:image/jpeg;base64,' + product.image" alt="{{ product.name }}" />
+                    <div class="tags">
+                        <span *ngIf="product.isFeatured" class="featured-tag">Featured</span>
+                        <span *ngIf="product.isPopular" class="popular-tag">Popular</span>
+                    </div>
+                    <div class="product-card-hover" *ngIf="hoveredProduct === product.productId">
+                        <i class="fa fa-cart-plus" title="Add to Cart"
+                            (click)="InsertItemInCart(product.productId)"></i>
+                        <i class="fa fa-eye" title="Preview Product" (click)="previewProduct(product.productId)"></i>
+                    </div>
+                </div>
+
+                <h5>{{ product.name }}</h5>
+                <p>{{ product.category }} | {{ product.brand }}</p>
+
+                <div class="rating">
+                    <ng-container *ngFor="let star of [1,2,3,4,5]">
+                        <i class="fa" [ngClass]="{
+                           'fa-star': (product.averageRating || 0) >= star,
+                           'fa-star-half-o': (product.averageRating || 0) >= (star - 0.5) && (product.averageRating || 0) < star,
+                           'fa-star-o': (product.averageRating || 0) < (star - 0.5)
+                         }">
+                        </i>
+                    </ng-container>
+                </div>
+
+                <div class="price-info">
+                    <span *ngIf="product.discount">
+                        <span class="original-price">₹{{ product.price }}</span>
+                        <span class="discounted-price">₹{{ product.price - (product.price * product.discount / 100) |
+                            number
+                            : '1.0-0' }}</span>
+                        <span class="discount-percent">({{ product.discount }}% off)</span>
+                    </span>
+                    <span *ngIf="!product.discount">
+                        ₹{{ product.price }}
+                    </span>
+                </div>
+
+                <div *ngIf="product.stockQuantity > 0" class="stock-info">
+                    Only {{ product.stockQuantity }} left in stock!
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button *ngFor="let page of totalPagesArray" (click)="pageChange(page)"
+                [class.active]="currentPage === page">
+                {{ page }}
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="loading" class="spinner"></div>
