@@ -1,3 +1,6 @@
+.env
+
+
 # Ignore build artifacts
 bin/
 obj/
@@ -40,5 +43,4 @@ wwwroot/
 # Dependency lock files
 packages.lock.json
 
-*.sln
 appsettings.Development.json

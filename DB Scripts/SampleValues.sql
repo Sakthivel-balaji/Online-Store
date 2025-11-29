@@ -1,4 +1,4 @@
-Customers
+--Customers
 INSERT INTO Customers (ProfilePicture, FullName, CreatedAt, IsDeleted, Phone, Email, PasswordHash, Role, UserName)
 VALUES 
 (NULL, 'Alice Johnson', GETDATE(), 0, '9876543210', 'alice@example.com', 'hash1', 'User', 'alicej'),
@@ -8,7 +8,7 @@ VALUES
 (NULL, 'Eva Green', GETDATE(), 0, '9665544332', 'eva@example.com', 'hash5', 'Seller', 'evag');
 
 
-Products
+--Products
 INSERT INTO Products (Name, Description, Category, Brand, Price, Discount, StockQuantity, Image, Weight, Length, Breadth, Height, IsFeatured, IsPopular, CreatedAt, IsDeleted)
 VALUES 
 ('Laptop', 'Gaming Laptop', 'Electronics', 'Dell', 85000, 10, 50, NULL, 2.5, 35, 25, 3, 1, 1, GETDATE(), 0),
@@ -18,7 +18,7 @@ VALUES
 ('Watch', 'Smartwatch', 'Wearables', 'Apple', 32000, 8, 40, NULL, 0.2, 4, 4, 1, 1, 0, GETDATE(), 0);
 
 
-CartItems
+--CartItems
 INSERT INTO CartItems (CustomerId, ProductId, Quantity, IsDeleted)
 VALUES 
 (1, 2, 1, 0),
@@ -28,7 +28,7 @@ VALUES
 (5, 5, 1, 0);
 
 
-DeliveryAddresses
+--DeliveryAddresses
 INSERT INTO DeliveryAddresses (CustomerId, Address, City, State, Country, PostalCode, Phone, CreatedAt, IsDeleted, IsPrimary)
 VALUES 
 (1, '12 Park Street', 'Chennai', 'TN', 'India', '600001', '9876543210', GETDATE(), 0, 1),
@@ -38,17 +38,17 @@ VALUES
 (5, '90 Nehru Street', 'Delhi', 'DL', 'India', '110005', '9665544332', GETDATE(), 0, 1);
 
 
-Orders
-INSERT INTO Orders (CustomerId, OrderDate, DeliveryDate, Status, IsDeleted, AddressId, TotalPrice)
+--Orders
+INSERT INTO Orders (CustomerId, OrderDate, DeliveryDate, [Status], IsDeleted, AddressId, TotalPrice)
 VALUES 
-(1, GETDATE(), GETDATE()+5, 'Pending', 0, 1, 85000),
+(1, GETDATE(), GETDATE()+5, 'Placed', 0, 1, 85000),
 (2, GETDATE(), GETDATE()+3, 'Shipped', 0, 2, 5500),
 (3, GETDATE(), GETDATE()+7, 'Delivered', 0, 3, 45000),
 (4, GETDATE(), GETDATE()+2, 'Cancelled', 0, 4, 2500),
-(5, GETDATE(), GETDATE()+4, 'Processing', 0, 5, 32000);
+(5, GETDATE(), GETDATE()+4, 'Placed', 0, 5, 32000);
 
 
-OrderItems
+--OrderItems
 INSERT INTO OrderItems (OrderId, ProductId, Quantity, UnitPrice, IsDeleted)
 VALUES 
 (1, 1, 1, 85000, 0),
@@ -58,7 +58,7 @@ VALUES
 (5, 5, 1, 32000, 0);
 
 
-Reviews
+--Reviews
 INSERT INTO Reviews (CustomerId, ProductId, Rating, Comment, CreatedAt, IsDeleted)
 VALUES 
 (1, 1, 5, 'Great performance!', GETDATE(), 0),
@@ -68,7 +68,7 @@ VALUES
 (5, 5, 5, 'Love the features!', GETDATE(), 0);
 
 
-Wishlist
+--Wishlist
 INSERT INTO Wishlist (CustomerId, ProductId, IsDeleted)
 VALUES 
 (1, 5, 0),
